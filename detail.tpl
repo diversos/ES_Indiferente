@@ -39,9 +39,9 @@
             % end
         </td>
         <td align="center"><strong>STALLED</strong></td>
-        <td align="center">
-            <strong>Ready to RT</strong><br>
-            % status = 'rejected'
+	<td align="center">
+            <strong>DONE</strong><br>
+            % status = 'resolved'
             % if status in number_tickets_per_status:
                 <strong>{{number_tickets_per_status[status]}}</strong>
             % end
@@ -51,7 +51,7 @@
         </td>
     </tr>
     <tr>
-        % for status in ['new', 'open', 'stalled', 'rejected']:
+        % for status in ['new', 'open', 'stalled','resolved']:
         %   if status not in tickets.keys():
         <td></td>
         %       continue
@@ -92,7 +92,11 @@ Subject: {{ticket['subject']}}" href="http://localhost/rt/Ticket/Display.html?id
             <a href="/ticket/{{ticket['id']}}/action/stalled?o={{username_id}}&email={{email}}">\</a>
             % end
             % if ticket['kanban_actions']['forward']:
+            %   if status == 'open':
+            <a href="http://localhost:8080/done/{{ticket['id']}}/{{username_id}}/{{email}}">></a>
+            %   else:
             <a href="/ticket/{{ticket['id']}}/action/forward?o={{username_id}}&email={{email}}">&gt;</a>
+            %   end
             % end
             <br>
             % end
