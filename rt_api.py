@@ -69,7 +69,7 @@ def get_list_of_tickets(rt_object, query, detail=True):
 
     The query should be a string with the RT4 syntax for querying the DB
     Example of query could be:
-        '(Owner="vapi@uc.pt" OR Owner="asantos@uc.pt") AND Status != "Resolved" AND Status != "Rejected"'
+        '(Owner="vapi@uc.pt" OR Owner="asantos@uc.pt") AND Status != "Resolved"'
 
     The result of this query will be a list with the following format:
         [
@@ -156,6 +156,54 @@ def modify_ticket(rt_object, ticket_id, new_values):
         raise ValueError(e)
 
 
+def add_comment(rt_object, ticket_id, new_values):
+    """
+    Modify ticket attributes. The first variable is the ticket ID to be changed. The second variable will be
+    a dictionary with a combination of attribute and its new value
+
+    :param ticket_id: the ticket ID (a string with the ticket number)
+    :param new_values: a dictionary with a relation attribute and its new value. Example: { 'Status': 'new', ... }
+    :return: Operation result
+    """
+
+    content = ''
+    for key in new_values:
+        content += key + ': ' + new_values[key] + '\n'
+
+    # Information required for RT query
+    uri = 'ticket/' + str(ticket_id) + '/comment'
+    data = {'content': content}
+
+    # Modify the ticket
+    try:
+        return rt_object.get_data_from_rest(uri, data)
+    except ValueError as e:
+        raise ValueError(e)
+
+
+def new_ticket(rt_object, new_values):
+    """
+    Create new ticket. The first variable will be
+    a dictionary with a combination of attribute and its new value
+
+    :param new_values: a dictionary with a relation attribute and its new value. Example: { 'Status': 'new', ... }
+    :return: Operation result
+    """
+    content = ''
+    for key in new_values:
+        content += key + ': ' + new_values[key] + '\n'
+
+    # Information required for RT query
+    uri = 'ticket/new'
+    data = {'content': content}
+
+    # Create the ticket
+    try:
+        return rt_object.get_data_from_rest(uri, data)
+    except ValueError as e:
+        raise ValueError(e)
+
+                
 def get_ticket_links(rt_object, ticket_id):
     """
     Get the list of links of a ticket_id.
