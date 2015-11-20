@@ -9,9 +9,7 @@
 class DITICConfig:
     """
     This class contains all configuration for this server
-    """
-    def __init__(self):
-        """
+
         This class contains those special variables.
         All configurations for this server should be done here!
         More important variables:
@@ -38,45 +36,40 @@ class DITICConfig:
             }
 
         :return: None
-        """
+    """
+    def __init__(self):
         self.email_to_user = {
-            'pmsilva@student.uc.pt': 'pmsilva',
+            'pmsilva@student.uc.pt': 'Pedro',
             'amdra@student.dei.uc.pt': 'André',
-            'mcunha@student.uc.pt': 'mcunha',
-            'rsaldanha@student.uc.pt': 'rsaldanha',
-            'rdias@student.uc.pt': 'rdias',
-            'pabreu@student.uc.pt': 'pabreu',
+            'mcunha@student.uc.pt': 'Mauro',
+            'rsaldanha@student.uc.pt': 'Saldanha',
+            'rdias@student.uc.pt': 'Rui',
+            'pabreu@student.uc.pt': 'Paulo',
         }
         self.email_limits = {
             'pmsilva@student.uc.pt':{
                 'new': 5,
                 'open': 2,
-                'rejected': 5,
             },
             'amdra@student.dei.uc.pt':{
                 'new': 5,
                 'open': 2,
-                'rejected': 5,
             },
             'mcunha@student.uc.pt':{
                 'new': 5,
                 'open': 2,
-                'rejected': 5,
             },
             'rsaldanha@student.uc.pt':{
                 'new': 5,
                 'open': 2,
-                'rejected': 5,
             },
             'rdias@student.uc.pt':{
                 'new': 5,
                 'open': 2,
-                'rejected': 5,
             },
             'pabreu@student.uc.pt':{
                 'new': 5,
                 'open': 2,
-                'rejected': 5,
             },
 
         }
@@ -84,7 +77,6 @@ class DITICConfig:
             'new',
             'open',
             'stalled',
-            'rejected',
             'resolved',
             'deleted',
         ]
@@ -104,32 +96,21 @@ class DITICConfig:
         return self.system
 
     def get_user_from_email(self, email):
-        """
-        Returns the user based on its email address. This information is based on the config file
+        #Returns the user based on its email address. This information is based on the config file
 
-        :param email:
-        :return:
-        """
         return self.email_to_user[email]
 
     def get_email_from_user(self, user):
-        """
-        Returns the email based on user alias
-
-        :param user: user alias
-        :return: email address. If no alias found, return ''
-        """
+        #Returns the email based on user alias
+        
         for email in self.email_to_user:
             if user == self.email_to_user[email]:
                 return email
         return ''
 
     def get_users_list(self):
-        """
-        Returns the list of users (not it's emails!)
+        #Returns the list of users (not it's emails!)
 
-        :return:
-        """
         return self.email_to_user.values()
 
     def get_email_limits(self, email, status=''):
@@ -152,13 +133,9 @@ class DITICConfig:
         return self.list_status
 
     def check_if_user_exist(self, user):
-        """
-        Check if the user (not it's email) exist.
-        The user is defined in the config file. You may add there more users
+        #Check if the user (not it's email) exist.
+        #The user is defined in the config file. You may add there more users
 
-        :param user:
-        :return:
-        """
         return user in self.email_to_user.values()
 
     def check_if_email_exist(self, email):
