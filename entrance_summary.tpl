@@ -91,6 +91,8 @@
     % end
 </p>
 
+<p><a href="http://localhost:8080/newticket">Create new ticket</a></p>
+
 <table border="1">
     <tr>
         <td align="center"><a href="/detail/dir?o={{username_id}}">DIR</a></td>
@@ -143,10 +145,10 @@
                     <td align="center">IN</td>
                     <td align="center">ACTIVE</td>
                     <td align="center">STALLED</td>
-                    <td align="center">R2RT</td>
+
                     <td align="center">DONE</td>
                 </tr>
-                % totals = { status: 0 for status in ['new', 'open', 'stalled', 'rejected', 'resolved']}
+                % totals = { status: 0 for status in ['new', 'open', 'stalled', 'resolved']}
                 % for email in sorted(summary):
                 %   if email.startswith('dir'):
                 %       continue
@@ -157,7 +159,7 @@
                 %   end
                 <tr>
                     <td><a href="/detail/{{email}}?o={{username_id}}">{{user}}</a></td>
-                    %   for status in ['new', 'open', 'stalled', 'rejected', 'resolved']:
+                    %   for status in ['new', 'open', 'stalled', 'resolved']:
                     <td>{{summary[email][status]}}</td>
                     %       totals[status] += summary[email][status]
                     % end
@@ -165,7 +167,7 @@
                 % end
                 <tr>
                     <td><strong>Totais</strong></td>
-                    %   for status in ['new', 'open', 'stalled', 'rejected', 'resolved']:
+                    %   for status in ['new', 'open', 'stalled', 'resolved']:
                     <td><strong>{{totals[status]}}</strong></td>
                     % end
                 </tr>
