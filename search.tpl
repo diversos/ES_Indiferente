@@ -28,27 +28,27 @@
            % for ticket in sorted(tickets[priority], reverse=True):
                 <tr>
                     <td>
-                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket_info['id']}}">
                             {{ticket['id']}}
                         </a>
                     </td>
                     <td>
-                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket_info['id']}}">
                             {{ticket['status']}}
                         </a>
                     </td>
                     <td>
-                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket_info['id']}}">
                             {{ticket['cf.{servico}']}}
                         </a>
                     </td>
                     <td>
-                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket_info['id']}}">
                             {{ticket['requestors']}}
                         </a>
                     </td>
                     <td>
-                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket_info['id']}}">
                             % subject = ticket['subject']
                             % if len(ticket['subject']) > max_len:
                             %   subject = ticket['subject'][:max_len]+'...'
@@ -57,7 +57,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+                        <a href="http://localhost/rt/Ticket/Display.html?id={{ticket_info['id']}}">
                             Created: {{ticket['created']}}<br>
                             Last Update: {{ticket['lastupdated']}}
                         </a>
