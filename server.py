@@ -19,15 +19,9 @@ from bottle import static_file
 from ditic_kanban.rt_summary import get_summary_info
 from ditic_kanban.config import DITICConfig
 from ditic_kanban.auth import UserAuth
-from ditic_kanban.tools import create_new_ticket
-from ditic_kanban.tools import user_tickets_details
-from ditic_kanban.tools import ticket_actions
-from ditic_kanban.tools import user_closed_tickets
-from ditic_kanban.tools import search_tickets
-from ditic_kanban.tools import get_urgent_tickets
-from ditic_kanban.rt_api import RTApi
-from ditic_kanban.statistics import get_date
-from ditic_kanban.statistics import get_statistics
+from ditic_kanban.tools import *
+from ditic_kanban.rt_api import *
+from ditic_kanban.statistics import *
 
 
 # My first global variable...
@@ -106,6 +100,20 @@ def comment(id_ticket,username_id,email):
     result.update({'comment': request.forms.get('comment'),'id_ticket': id_ticket,'username_id': username_id, 'email':email})
     return template('comment', result)
 
+@get('/description/<id_ticket>')
+def ticket_description(id_ticket):
+    result = create_default_result()
+    result.update({'ticket': get_ticket_description(user_auth.get_rt_object_from_email(
+            user_auth.get_email_from_id(request.query.o)
+        ), id_ticket)})
+    result.update({'links': get_ticket_links(user_auth.get_rt_object_from_email(
+            user_auth.get_email_from_id(request.query.o)
+        ), id_ticket)})
+    result.update({'history': get_ticket_history(user_auth.get_rt_object_from_email(
+            user_auth.get_email_from_id(request.query.o)
+        ), id_ticket)})
+
+    return template('description', result)
 
 @get('/detail/<email>')
 def email_detail(email):
