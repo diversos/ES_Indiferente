@@ -101,7 +101,7 @@ def comment(id_ticket,username_id,email):
     return template('comment', result)
 
 @get('/description/<id_ticket>')
-def ticket_description(id_ticket):
+def ticket_description(id_ticket,):
     result = create_default_result()
     result.update({'ticket': get_ticket_description(user_auth.get_rt_object_from_email(
             user_auth.get_email_from_id(request.query.o)
@@ -112,7 +112,8 @@ def ticket_description(id_ticket):
     result.update({'history': get_ticket_history(user_auth.get_rt_object_from_email(
             user_auth.get_email_from_id(request.query.o)
         ), id_ticket)})
-
+    result.update({'email': user_auth.get_email_from_id(request.query.o)})
+    result.update({'username_id': request.query.o})
     return template('description', result)
 
 @get('/detail/<email>')
