@@ -239,3 +239,117 @@ def get_ticket_links(rt_object, ticket_id):
             continue
 
     return result
+
+
+def get_ticket_description(rt_object, ticket_id):
+    """
+    Get a full list of all tickets, and its information, based on the query.
+
+    The query should be a string with the RT4 syntax for querying the DB
+    Example of query could be:
+        '(Owner="vapi@uc.pt" OR Owner="asantos@uc.pt") AND Status != "Resolved"'
+
+    The result of this query will be a list with the following format:
+        [
+            [ <ticketID>,
+                {
+                    <field>: <value>,
+                    ...
+                }
+            ],
+            ...
+        ]
+
+    The param detail will define if we want detailed information in the response. By default is yes
+
+    :param query: a string with the query
+    :param detail: a boolean. True if we want detailed answer (default). False otherwise.
+    :return: a list
+    """
+    response = rt_object.get_data_from_rest('/ticket/%s/show' % ticket_id, {})
+
+    for line in response:
+        # If the result is an error, return without any response (raise an exception)
+        if line.startswith('your username or password is incorrect') \
+                or line.startswith('invalid query:') \
+                or line.startswith('no matching results.'):
+            raise ValueError(line)
+
+        # Ignore those lines...
+        if line.startswith('rt/4') or line == '' or line == '--':
+            continue
+
+        # Here, we get the ticket ID. This information is critical
+        if line.startswith('id: ticket/'):
+            result = {'id': line[11:]}
+            continue
+
+        # If we get into this part, then we must get the pair key / value returned by server
+        find_semicolon = line.find(':')
+        find_previous = line[:find_semicolon]
+        find_after = line[find_semicolon + 2:]
+        result[find_previous] = find_after
+
+    return result
+
+
+def get_ticket_history(rt_object, ticket_id):
+    """
+    Get a full list of all tickets, and its information, based on the query.
+
+    The query should be a string with the RT4 syntax for querying the DB
+    Example of query could be:
+        '(Owner="vapi@uc.pt" OR Owner="asantos@uc.pt") AND Status != "Resolved"'
+
+    The result of this query will be a list with the following format:
+        [
+            [ <ticketID>,
+                {
+                    <field>: <value>,
+                    ...
+                }
+            ],
+            ...
+        ]
+
+    The param detail will define if we want detailed information in the response. By default is yes
+
+    :param query: a string with the query
+    :param detail: a boolean. True if we want detailed answer (default). False otherwise.
+    :return: a list
+    """
+
+    response = rt_object.get_data_from_rest('/ticket/%s/history?format=l' % ticket_id, {})
+    result = []
+
+    # In this section, we must transform the result from server into the format
+    # this function is supposed to return
+    for line in response:
+
+        # If the result is an error, return without any response (raise an exception)
+        if line.startswith('your username or password is incorrect') \
+                or line.startswith('invalid query:') \
+                or line.startswith('no matching results.'):
+            raise ValueError(line)
+
+        # Ignore those lines...
+        if line.startswith('rt/4') or line == '' or line == '--' or line.startswith('#'):
+            continue
+
+        # Here, we get the ticket ID. This information is critical
+        if line.startswith('id: ticket/'):
+            result.append({'id': line[11:]})
+            continue
+
+        # If we get into this part, then we must get the pair key / value returned by server
+        find_semicolon = line.find(':')
+        find_previous = line[:find_semicolon]
+        find_after = line[find_semicolon + 2:]
+
+        # Populate the result variable
+        if line.startswith('id'):
+            result.append({find_previous: find_after})
+        else:
+            result[-1].update({find_previous: find_after})
+
+    return result
