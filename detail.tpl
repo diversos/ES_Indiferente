@@ -77,7 +77,7 @@ Status: {{ticket['status']}}
 TimeWorked: {{ticket['timeworked']}}
 
 Requestor: {{ticket['requestors']}}
-Subject: {{ticket['subject']}}" href="http://localhost/rt/Ticket/Display.html?id={{ticket['id']}}">
+Subject: {{ticket['subject']}}" href="http://localhost:8080/description/{{ticket['id']}}?o={{username_id}}">
                 {{ticket['id']}}
                 % subject = ticket['subject']
                 % if len(ticket['subject']) > max_len:
